@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useMemo } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import MessageItem from './MessageItem'
+import { colors, spacing, typography } from '../theme'
 
 const MessageList = ({ 
   messages, 
@@ -24,11 +25,12 @@ const MessageList = ({
   const listData = useMemo(() => {
     const data = []
     
-    // Add header data
-    data.push(
-      { id: 'topic', type: 'header', content: roomTopic },
-      { id: 'peers', type: 'peers', content: peersCount }
-    )
+    // Add header with room info
+    data.push({
+      id: 'room_header',
+      type: 'room_header',
+      content: { roomTopic, peersCount }
+    })
     
     // Add message data
     const messageData = messages.map((message, index) => ({
@@ -45,27 +47,24 @@ const MessageList = ({
 
   const renderItem = ({ item }) => {
     switch (item.type) {
-      case 'header':
+      case 'room_header':
         return (
-          <View style={styles.headerItem}>
-            <MessageItem type="header" content={item.content} />
-          </View>
-        )
-      case 'peers':
-        return (
-          <View style={styles.headerItem}>
-            <MessageItem type="peers" content={item.content} />
+          <View style={styles.headerContainer}>
+            <View style={styles.headerContent}>
+              <Text style={styles.roomTitle}>{item.content.roomTopic}</Text>
+              <Text style={styles.memberCount}>
+                {item.content.peersCount} member{item.content.peersCount !== 1 ? 's' : ''}
+              </Text>
+            </View>
           </View>
         )
       case 'message':
         return (
-          <View style={styles.messageItem}>
-            <MessageItem 
-              type="message" 
-              content={item.content} 
-              isLocal={item.content.local}
-            />
-          </View>
+          <MessageItem 
+            type="message" 
+            content={item.content} 
+            isLocal={item.content.local}
+          />
         )
       default:
         return null
@@ -80,10 +79,11 @@ const MessageList = ({
         renderItem={renderItem}
         estimatedItemSize={70}
         keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={true}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No messages yet</Text>
+            <Text style={styles.emptySubtext}>Start a conversation!</Text>
           </View>
         }
         contentContainerStyle={styles.contentContainer}
@@ -95,26 +95,47 @@ const MessageList = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 10,
+    backgroundColor: colors.background,
   },
   contentContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.xl,
   },
-  headerItem: {
-    marginBottom: 8,
+  headerContainer: {
+    paddingVertical: spacing.xl,
+    paddingBottom: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    marginBottom: spacing.lg,
   },
-  messageItem: {
-    marginBottom: 5,
+  headerContent: {
+    alignItems: 'center',
+  },
+  roomTitle: {
+    fontSize: typography.fontSize.xxl,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text,
+    marginBottom: spacing.xs,
+  },
+  memberCount: {
+    fontSize: typography.fontSize.md,
+    color: colors.textSecondary,
   },
   emptyContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 20,
+    paddingVertical: 60,
   },
   emptyText: {
-    color: '#666',
-    fontSize: 16,
+    color: colors.textSecondary,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.semibold,
+    marginBottom: spacing.sm,
+  },
+  emptySubtext: {
+    color: colors.textTertiary,
+    fontSize: typography.fontSize.md,
   },
 })
 
