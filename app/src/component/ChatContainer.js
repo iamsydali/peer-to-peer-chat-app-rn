@@ -10,6 +10,7 @@ const ChatContainer = ({
   inputText,
   setInputText,
   handleSend,
+  onExit,
 }) => {
   return (
     <View style={styles.chatContainer}>
@@ -18,6 +19,7 @@ const ChatContainer = ({
           messages={messages}
           roomTopic={roomTopic}
           peersCount={peersCount}
+          onExit={onExit}
         />
       </View>
       <ChatInput

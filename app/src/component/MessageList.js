@@ -8,12 +8,12 @@ import { colors, spacing, typography } from '../theme'
 const MessageList = ({ 
   messages, 
   roomTopic, 
-  peersCount
+  peersCount,
+  onExit
 }) => {
   const flashListRef = useRef(null)
   const shouldAutoScroll = useRef(true)
 
-  // Auto-scroll to bottom when new messages arrive (only if user is at bottom)
   useEffect(() => {
     if (messages.length > 0 && flashListRef.current && shouldAutoScroll.current) {
       setTimeout(() => {
@@ -45,6 +45,7 @@ const MessageList = ({
           <ChatHeader 
             roomTopic={roomTopic}
             peersCount={peersCount}
+            onExit={onExit}
           />
         }
         ListEmptyComponent={

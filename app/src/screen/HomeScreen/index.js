@@ -14,7 +14,8 @@ export const HomeScreen = () => {
   // Redux state
   const { 
     messages, 
-    addMessage
+    addMessage,
+    clearMessages,
   } = useMessages()
   
   const {
@@ -28,6 +29,7 @@ export const HomeScreen = () => {
     updateRoomTopicInput,
     setCreating,
     setJoining,
+    disconnect,
   } = useRoom()
 
   const handleTopic = useCallback(topic => {
@@ -65,6 +67,14 @@ export const HomeScreen = () => {
     }
   }
 
+  const handleExit = useCallback(() => {
+    if (backend) {
+      backend.leaveRoom()
+    }
+    disconnect()
+    clearMessages()
+  }, [backend, disconnect, clearMessages])
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -80,6 +90,7 @@ export const HomeScreen = () => {
             inputText={inputText}
             setInputText={setInputText}
             handleSend={handleSend}
+            onExit={handleExit}
           />
         ) : (
           <WelcomeScreen

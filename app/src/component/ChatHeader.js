@@ -4,7 +4,11 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import * as Clipboard from 'expo-clipboard'
 import { colors, spacing, typography } from '../theme'
 
-const ChatHeader = memo(({ roomTopic, peersCount }) => {
+const ChatHeader = memo(({ 
+  roomTopic, 
+  peersCount,
+  onExit 
+}) => {
   const handleCopyTopic = async () => {
     try {
       await Clipboard.setStringAsync(roomTopic)
@@ -14,21 +18,52 @@ const ChatHeader = memo(({ roomTopic, peersCount }) => {
     }
   }
 
+  const handleExit = () => {
+    Alert.alert(
+      'Leave Chat',
+      'Are you sure you want to leave this chat?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Leave',
+          onPress: onExit,
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    )
+  }
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerContent}>
-        <View style={styles.topicContainer}>
-          <Text style={styles.roomTitle} numberOfLines={1} ellipsizeMode="tail">
-            {roomTopic}
-          </Text>
-          <TouchableOpacity onPress={handleCopyTopic} style={styles.copyButton}>
-            <MaterialIcons name="content-copy" size={20} color={colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.memberCount}>
-          {Math.max(1, peersCount)} member{Math.max(1, peersCount) !== 1 ? 's' : ''}
+        <TouchableOpacity 
+          onPress={handleExit} 
+          style={styles.exitButton}
+        >
+          <MaterialIcons 
+            name="arrow-back" 
+            size={24} 
+            color={colors.textSecondary} 
+          />
+        </TouchableOpacity>
+        <Text style={styles.roomTitle} numberOfLines={1} ellipsizeMode="tail">
+          {roomTopic}
         </Text>
+        <TouchableOpacity onPress={handleCopyTopic} style={styles.copyButton}>
+            <MaterialIcons 
+              name="content-copy" 
+              size={20} 
+              color={colors.textSecondary} 
+            />
+          </TouchableOpacity>
       </View>
+      <Text style={styles.memberCount}>
+        {Math.max(1, peersCount)} member{Math.max(1, peersCount) !== 1 ? 's' : ''}
+      </Text>
     </View>
   )
 })
@@ -43,13 +78,11 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     alignItems: 'center',
-  },
-  topicContainer: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
-    maxWidth: '100%',
+  },
+  exitButton: {
+    padding: spacing.sm,
   },
   roomTitle: {
     fontSize: typography.fontSize.xxl,
@@ -57,14 +90,15 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: spacing.xs,
     flex: 1,
+    textAlign: 'center',
   },
   copyButton: {
     padding: spacing.sm,
-    marginLeft: spacing.sm,
   },
   memberCount: {
     fontSize: typography.fontSize.md,
     color: colors.textSecondary,
+    alignSelf: 'center'
   },
 })
 
