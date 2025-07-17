@@ -3,14 +3,11 @@ import { View, StyleSheet, Text } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import MessageItem from './MessageItem'
 import ChatHeader from './ChatHeader'
+import { useMessages } from '../hook/useRedux'
 import { colors, spacing, typography } from '../theme'
 
-const MessageList = ({ 
-  messages, 
-  roomTopic, 
-  peersCount,
-  onExit
-}) => {
+const MessageList = ({ onExit }) => {
+  const { messages } = useMessages()
   const flashListRef = useRef(null)
   const shouldAutoScroll = useRef(true)
 
@@ -42,11 +39,7 @@ const MessageList = ({
         keyExtractor={(item, index) => `message_${item.timestamp}_${index}`}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <ChatHeader 
-            roomTopic={roomTopic}
-            peersCount={peersCount}
-            onExit={onExit}
-          />
+          <ChatHeader onExit={onExit} />
         }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>

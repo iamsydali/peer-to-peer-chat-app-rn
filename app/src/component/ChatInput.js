@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { useBackend } from '../component/BareProvider'
+import { useMessages } from '../hook/useRedux'
 import { colors, spacing, borderRadius } from '../theme'
 
-const ChatInput = ({ 
-  inputText, 
-  setInputText, 
-  handleSend 
-}) => {
+const ChatInput = () => {
+  const [inputText, setInputText] = useState('')
+  const backend = useBackend()
+  const { addMessage } = useMessages()
+
+  const handleSend = () => {
+    if (inputText.trim() && backend) {
+      backend.sendMessage(inputText, (response, isLocal) => {
+        if (isLocal) {
+          addMessage(inputText)
+        }
+      })
+      setInputText('')
+    }
+  }
+
   return (
     <View style={styles.inputContainer}>
       <View style={styles.inputWrapper}>

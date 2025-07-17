@@ -1,4 +1,4 @@
-import { useState, useCallback } from'react'
+import { useCallback } from 'react'
 import { StyleSheet, Platform, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useBackend } from '../../component/BareProvider'
@@ -9,19 +9,10 @@ import { colors } from '../../theme'
 
 export const HomeScreen = () => {
   const backend = useBackend()
-  const [inputText, setInputText] = useState('')
-  
-  // Redux state
-  const { 
-    messages, 
-    addMessage,
-    clearAllMessages,
-  } = useMessages()
+  const { clearAllMessages } = useMessages()
   
   const {
-    roomTopic,
     roomTopicInput,
-    peersCount,
     isConnected,
     isCreating,
     isJoining,
@@ -56,17 +47,6 @@ export const HomeScreen = () => {
     })
   }, [backend, roomTopicInput, handleTopic, setJoining])
 
-  const handleSend = () => {
-    if (inputText.trim() && backend) {
-      backend.sendMessage(inputText, (response, isLocal) => {
-        if (isLocal) {
-          addMessage(inputText)
-        }
-      })
-      setInputText('')
-    }
-  }
-
   const handleExit = useCallback(() => {
     resetRoomState()
     clearAllMessages()
@@ -80,15 +60,7 @@ export const HomeScreen = () => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         {isConnected ? (
-          <ChatContainer
-            messages={messages}
-            roomTopic={roomTopic}
-            peersCount={peersCount}
-            inputText={inputText}
-            setInputText={setInputText}
-            handleSend={handleSend}
-            onExit={handleExit}
-          />
+          <ChatContainer onExit={handleExit} />
         ) : (
           <WelcomeScreen
             isCreating={isCreating}

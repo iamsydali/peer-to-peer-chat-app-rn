@@ -3,30 +3,13 @@ import { View, StyleSheet } from 'react-native'
 import MessageList from './MessageList'
 import ChatInput from './ChatInput'
 
-const ChatContainer = ({
-  messages,
-  roomTopic,
-  peersCount,
-  inputText,
-  setInputText,
-  handleSend,
-  onExit,
-}) => {
+const ChatContainer = ({ onExit }) => {
   return (
     <View style={styles.chatContainer}>
       <View style={styles.messageListContainer}>
-        <MessageList
-          messages={messages}
-          roomTopic={roomTopic}
-          peersCount={peersCount}
-          onExit={onExit}
-        />
+        <MessageList onExit={onExit} />
       </View>
-      <ChatInput
-        inputText={inputText}
-        setInputText={setInputText}
-        handleSend={handleSend}
-      />
+      <ChatInput />
     </View>
   )
 }

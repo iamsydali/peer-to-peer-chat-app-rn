@@ -2,13 +2,12 @@ import React, { memo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import * as Clipboard from 'expo-clipboard'
+import { useRoom } from '../hook/useRedux'
 import { colors, spacing, typography } from '../theme'
 
-const ChatHeader = memo(({ 
-  roomTopic, 
-  peersCount,
-  onExit 
-}) => {
+const ChatHeader = memo(({ onExit }) => {
+  const { roomTopic, peersCount } = useRoom()
+
   const handleCopyTopic = async () => {
     try {
       await Clipboard.setStringAsync(roomTopic)
@@ -54,12 +53,12 @@ const ChatHeader = memo(({
           {roomTopic}
         </Text>
         <TouchableOpacity onPress={handleCopyTopic} style={styles.copyButton}>
-            <MaterialIcons 
-              name="content-copy" 
-              size={20} 
-              color={colors.textSecondary} 
-            />
-          </TouchableOpacity>
+          <MaterialIcons 
+            name="content-copy" 
+            size={20} 
+            color={colors.textSecondary} 
+          />
+        </TouchableOpacity>
       </View>
       <Text style={styles.memberCount}>
         {Math.max(1, peersCount)} member{Math.max(1, peersCount) !== 1 ? 's' : ''}
