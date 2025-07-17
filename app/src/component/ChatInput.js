@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import { useBackend } from '../component/BareProvider'
+import { useBackend } from '../providers/BareProvider'
 import { useMessages } from '../hook/useRedux'
 import { colors, spacing, borderRadius } from '../theme'
 

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { StyleSheet, Platform, SafeAreaView, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
-import { useBackend } from '../../component/BareProvider'
+import { useBackend } from '../../providers/BareProvider'
 import { useMessages, useRoom } from '../../hook/useRedux'
 import WelcomeScreen from '../../component/WelcomeScreen'
 import ChatContainer from '../../component/ChatContainer'
