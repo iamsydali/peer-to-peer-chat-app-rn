@@ -3,7 +3,6 @@ import { createMessage } from '../../worklet/api.mjs'
 
 const initialState = {
   messages: [],
-  isLoading: false,
   error: null,
 }
 
@@ -32,9 +31,6 @@ const messageSlice = createSlice({
     clearMessages: (state) => {
       state.messages = []
     },
-    setLoading: (state, action) => {
-      state.isLoading = action.payload
-    },
     setError: (state, action) => {
       state.error = action.payload
     },
@@ -44,13 +40,11 @@ const messageSlice = createSlice({
 export const {
   addMessage,
   clearMessages,
-  setLoading,
   setError,
 } = messageSlice.actions
 
 // Selectors
 export const selectMessages = (state) => state.messages.messages
-export const selectIsLoading = (state) => state.messages.isLoading
 export const selectError = (state) => state.messages.error
 
 export default messageSlice.reducer 

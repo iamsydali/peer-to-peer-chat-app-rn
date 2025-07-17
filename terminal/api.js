@@ -6,7 +6,7 @@ export const API_RECEIVE_MESSAGE = 'receive_message'
 export const API_UPDATE_CONNECTIONS = 'update_connections'
 
 export const createMessage = (msg, local = false) => ({
-  timestamp: new Date(),
+  timestamp: new Date().toISOString(),
   message: msg,
   local,
   type: 'text',

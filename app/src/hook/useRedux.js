@@ -1,9 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux'
 import {
   selectMessages,
+  selectAllMessages,
+  selectHasMoreMessages,
   selectIsLoading,
+  selectIsLoadingMore,
   selectError,
+  selectMessageCount,
   addMessage,
+  loadMoreMessages,
+  initializeMessages,
   clearMessages,
 } from '../store/messageSlice'
 import {
@@ -23,12 +29,24 @@ import {
 // Message hooks
 export const useMessages = () => {
   const messages = useSelector(selectMessages)
+  const allMessages = useSelector(selectAllMessages)
+  const hasMoreMessages = useSelector(selectHasMoreMessages)
   const isLoading = useSelector(selectIsLoading)
+  const isLoadingMore = useSelector(selectIsLoadingMore)
   const error = useSelector(selectError)
+  const messageCount = useSelector(selectMessageCount)
   const dispatch = useDispatch()
 
   const addNewMessage = (message, isLocal = true, memberId = null) => {
     dispatch(addMessage({ message, local: isLocal, memberId }))
+  }
+
+  const loadMore = () => {
+    dispatch(loadMoreMessages())
+  }
+
+  const initialize = () => {
+    dispatch(initializeMessages())
   }
 
   const clearAllMessages = () => {
@@ -37,9 +55,15 @@ export const useMessages = () => {
 
   return {
     messages,
+    allMessages,
+    hasMoreMessages,
     isLoading,
+    isLoadingMore,
     error,
+    messageCount,
     addMessage: addNewMessage,
+    loadMoreMessages: loadMore,
+    initializeMessages: initialize,
     clearAllMessages,
   }
 }

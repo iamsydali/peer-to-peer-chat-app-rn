@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from'react'
+import { useState, useCallback } from'react'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -6,23 +6,25 @@ import {
   TextInput,
   View,
   KeyboardAvoidingView,
-  Keyboard,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   Platform,
 } from 'react-native'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 
 import { useBackend } from '../../component/BareProvider'
 import { useMessages, useRoom } from '../../hook/useRedux'
-import { getBackend } from '../../lib/rpcRedux'
+import MessageList from '../../component/MessageList'
 
 export const HomeScreen = () => {
   const backend = useBackend()
   const [inputText, setInputText] = useState('')
   
   // Redux state
-  const { messages, addMessage } = useMessages()
+  const { 
+    messages, 
+    addMessage
+  } = useMessages()
+  
   const {
     roomTopic,
     roomTopicInput,
@@ -78,65 +80,54 @@ export const HomeScreen = () => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
       >
       {isConnected ? (
-      <>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.innerContainer}>
-            <View style={styles.messageList}>
-              <Text selectable>Topic: {roomTopic}</Text>
-              <Text>Peers: {peersCount}</Text>
-              {messages && messages.map((event, idx) => (
-                <View key={idx} style={event.local ? [styles.message, styles.myMessage] : styles.message}>
-                  <Text style={styles.member}>{event?.memberId ?? 'You'}</Text>
-                  <Text selectable>{event.message}</Text>
-                </View>)
-              )}
-            </View>
+        <View style={styles.chatContainer}>
+          <View style={styles.messageListContainer}>
+            <MessageList
+              messages={messages}
+              roomTopic={roomTopic}
+              peersCount={peersCount}
+            />
           </View>
-        </TouchableWithoutFeedback>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.msgInput}
-            placeholder="Say something"
-            value={inputText}
-            onChangeText={setInputText} />
-          <TouchableOpacity style={styles.sendButton} onPress={handleSend} >
-            <MaterialIcons name="send" size={16} color="white" />
-          </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.msgInput}
+              placeholder="Say something"
+              value={inputText}
+              onChangeText={setInputText} />
+            <TouchableOpacity style={styles.sendButton} onPress={handleSend} >
+              <MaterialIcons name="send" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
-      </>
       ) : (
-      <View style={styles.innerContainer}>
-        <View style={styles.info}>
-          <Text>Open up src/screen/HomeScreen.js to start working on your app!</Text>
-          <Text>FYR lib/rpc and worklet/app.cjs has related backend code.</Text>
-        </View>
-        <TouchableOpacity 
-          style={[styles.message, styles.sendButton, isCreating && styles.buttonDisabled]} 
-          onPress={handleCreate}
-          disabled={isCreating}
-        >
-          <Text>{isCreating ? 'Creating...' : 'Create Room'}</Text>
-        </TouchableOpacity>
-        <Text>
-          Or
-        </Text>
-        <View style={styles.buttonGroup}>
-          <TextInput 
-            value={roomTopicInput} 
-            onChangeText={updateRoomTopicInput} 
-            style={styles.textInput} 
-            placeholder="Enter room topic"
-          />
+        <View style={styles.innerContainer}>
           <TouchableOpacity 
-            style={[styles.message, styles.sendButton, isJoining && styles.buttonDisabled]} 
-            onPress={handleJoin}
-            disabled={isJoining}
+            style={[styles.message, styles.sendButton, isCreating && styles.buttonDisabled]} 
+            onPress={handleCreate}
+            disabled={isCreating}
           >
-            <Text>{isJoining ? 'Joining...' : 'Join Room'}</Text>
+            <Text>{isCreating ? 'Creating...' : 'Create Room'}</Text>
           </TouchableOpacity>
+          <Text>
+            Or
+          </Text>
+          <View style={styles.buttonGroup}>
+            <TextInput 
+              value={roomTopicInput} 
+              onChangeText={updateRoomTopicInput} 
+              style={styles.textInput} 
+              placeholder="Enter room topic"
+            />
+            <TouchableOpacity 
+              style={[styles.message, styles.sendButton, isJoining && styles.buttonDisabled]} 
+              onPress={handleJoin}
+              disabled={isJoining}
+            >
+              <Text>{isJoining ? 'Joining...' : 'Join Room'}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    )}
+      )}
       <StatusBar style="auto" />
     </KeyboardAvoidingView>
   )
@@ -147,23 +138,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  chatContainer: {
+    flex: 1,
+  },
+  messageListContainer: {
+    flex: 1,
+  },
   innerContainer: {
     flex: 1,
     padding: 10,
-  },
-  messageList: {
-    paddingVertical: 10,
-  },
-  message: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: '#e6e6e6',
-    borderRadius: 10,
-    alignSelf: 'flex-start',
-  },
-  myMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#AAA',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -192,22 +177,24 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: 'row',
     width: '100%',
-    gap: 8
+    gap: 8,
+    marginTop: 10,
   },
   textInput: {
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
-    flex: 1
+    flex: 1,
   },
   buttonDisabled: {
     backgroundColor: 'grey',
   },
-  info: {
-    backgroundColor: '#EEE',
+  message: {
     padding: 10,
-    borderRadius: 5,
-    gap: 8,
+    marginVertical: 5,
+    backgroundColor: '#e6e6e6',
+    borderRadius: 10,
+    alignSelf: 'flex-start',
   },
 })
 

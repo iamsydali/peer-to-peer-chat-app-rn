@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~4.0.0",
     "@reduxjs/toolkit": "^2.8.2",
+    "@shopify/flash-list": "^1.8.3",
     "b4a": "1.6.7",
     "bare-events": "^2.5.4",
     "bare-rpc": "^0.1.4",
