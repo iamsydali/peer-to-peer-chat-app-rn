@@ -6,6 +6,11 @@ const MessageItem = memo(({ type, content, isLocal }) => {
   if (type === 'message') {
     return (
       <View style={[styles.messageWrapper, isLocal && styles.localMessageWrapper]}>
+        {!isLocal && content.memberId && (
+          <Text style={styles.memberIdText}>
+            {content.memberId}
+          </Text>
+        )}
         <View style={[styles.messageContainer, isLocal && styles.localMessage]}>
           <Text style={[styles.messageText, isLocal && styles.localMessageText]} selectable>
             {content.message}
@@ -28,12 +33,18 @@ const MessageItem = memo(({ type, content, isLocal }) => {
 
 const styles = StyleSheet.create({
   messageWrapper: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginBottom: spacing.sm,
     paddingHorizontal: spacing.xs,
   },
   localMessageWrapper: {
-    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+  },
+  memberIdText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
+    marginLeft: spacing.sm,
   },
   messageContainer: {
     maxWidth: '75%',
