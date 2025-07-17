@@ -15,7 +15,7 @@ export const HomeScreen = () => {
   const { 
     messages, 
     addMessage,
-    clearMessages,
+    clearAllMessages,
   } = useMessages()
   
   const {
@@ -29,7 +29,7 @@ export const HomeScreen = () => {
     updateRoomTopicInput,
     setCreating,
     setJoining,
-    disconnect,
+    resetRoomState,
   } = useRoom()
 
   const handleTopic = useCallback(topic => {
@@ -68,12 +68,9 @@ export const HomeScreen = () => {
   }
 
   const handleExit = useCallback(() => {
-    if (backend) {
-      backend.leaveRoom()
-    }
-    disconnect()
-    clearMessages()
-  }, [backend, disconnect, clearMessages])
+    resetRoomState()
+    clearAllMessages()
+  }, [resetRoomState, clearAllMessages])
 
   return (
     <SafeAreaView style={styles.safeArea}>
