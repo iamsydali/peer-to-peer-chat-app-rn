@@ -1,6 +1,6 @@
 import b4a from 'b4a'
 import { store } from '../store'
-import { addRemoteMessage } from '../store/messageSlice'
+import { addMessage } from '../store/messageSlice'
 import { setPeersCount } from '../store/roomSlice'
 
 import {
@@ -24,15 +24,14 @@ export const rpcHandler = async (req) => {
       const memberId = data?.memberId
       console.log('got message:', message)
       
-      // Dispatch to Redux store instead of using events
-      store.dispatch(addRemoteMessage({ message, memberId }))
+      // Dispatch to Redux store using simplified action
+      store.dispatch(addMessage({ message, local: false, memberId }))
       break
       
     case API_UPDATE_CONNECTIONS:
       const count = b4a.toString(req.data, 'utf8')
       console.log('current peer cnt:', count)
       
-      // Dispatch to Redux store instead of using events
       store.dispatch(setPeersCount(parseInt(count)))
       break
       

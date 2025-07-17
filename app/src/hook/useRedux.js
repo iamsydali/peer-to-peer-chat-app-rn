@@ -3,7 +3,7 @@ import {
   selectMessages,
   selectIsLoading,
   selectError,
-  addLocalMessage,
+  addMessage,
   clearMessages,
 } from '../store/messageSlice'
 import {
@@ -27,8 +27,8 @@ export const useMessages = () => {
   const error = useSelector(selectError)
   const dispatch = useDispatch()
 
-  const addMessage = (message) => {
-    dispatch(addLocalMessage({ message }))
+  const addNewMessage = (message, isLocal = true, memberId = null) => {
+    dispatch(addMessage({ message, local: isLocal, memberId }))
   }
 
   const clearAllMessages = () => {
@@ -39,7 +39,7 @@ export const useMessages = () => {
     messages,
     isLoading,
     error,
-    addMessage,
+    addMessage: addNewMessage,
     clearAllMessages,
   }
 }

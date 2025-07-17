@@ -13,20 +13,20 @@ const messageSlice = createSlice({
   reducers: {
     addMessage: (state, action) => {
       const { message, local = false, memberId } = action.payload
-      const newMessage = createMessage(message, local)
+      let newMessage
+      
+      if (typeof message === 'string') {
+        // Handle plain text messages (usually local messages)
+        newMessage = createMessage(message, local)
+      } else {
+        // Handle remote messages that come with additional metadata
+        newMessage = { ...message, local }
+      }
+      
       if (memberId) {
         newMessage.memberId = memberId
       }
-      state.messages.push(newMessage)
-    },
-    addLocalMessage: (state, action) => {
-      const { message } = action.payload
-      const newMessage = createMessage(message, true)
-      state.messages.push(newMessage)
-    },
-    addRemoteMessage: (state, action) => {
-      const { message, memberId } = action.payload
-      const newMessage = { ...message, local: false, memberId }
+      
       state.messages.push(newMessage)
     },
     clearMessages: (state) => {
@@ -43,8 +43,6 @@ const messageSlice = createSlice({
 
 export const {
   addMessage,
-  addLocalMessage,
-  addRemoteMessage,
   clearMessages,
   setLoading,
   setError,
