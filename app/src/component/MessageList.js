@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import MessageItem from './MessageItem'
-import MessageListHeader from './MessageListHeader'
+import ChatHeader from './ChatHeader'
 import { colors, spacing, typography } from '../theme'
 
 const MessageList = ({ 
@@ -42,7 +42,7 @@ const MessageList = ({
         keyExtractor={(item, index) => `message_${item.timestamp}_${index}`}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <MessageListHeader 
+          <ChatHeader 
             roomTopic={roomTopic}
             peersCount={peersCount}
           />

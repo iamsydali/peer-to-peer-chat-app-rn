@@ -4,7 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import * as Clipboard from 'expo-clipboard'
 import { colors, spacing, typography } from '../theme'
 
-const MessageListHeader = memo(({ roomTopic, peersCount }) => {
+const ChatHeader = memo(({ roomTopic, peersCount }) => {
   const handleCopyTopic = async () => {
     try {
       await Clipboard.setStringAsync(roomTopic)
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
   },
 })
 
-MessageListHeader.displayName = 'MessageListHeader'
+ChatHeader.displayName = 'ChatHeader'
 
-export default MessageListHeader 
+export default ChatHeader 
