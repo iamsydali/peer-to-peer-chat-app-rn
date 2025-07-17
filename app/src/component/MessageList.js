@@ -21,9 +21,9 @@ const MessageList = () => {
   // Handle keyboard show/hide
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      if (flashListRef.current) {
+      if (messages.length > 0 && flashListRef.current && shouldAutoScroll.current) {
         setTimeout(() => {
-          flashListRef.current?.scrollToEnd({ animated: true })
+          flashListRef?.current?.scrollToEnd({ animated: true })
         }, 100)
       }
     })
@@ -76,8 +76,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   contentContainer: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.sm,
     paddingBottom: spacing.xl,
+    paddingTop: spacing.xs,
   },
   emptyContainer: {
     flex: 1,
