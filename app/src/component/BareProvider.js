@@ -1,7 +1,6 @@
 
-import { createContext, useContext, useState, useEffect } from'react'
-
-import { getBackend } from '../lib/rpcRedux'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { getBackend } from '../lib/rpc'
 import useWorklet from '../hook/useWorklet'
 
 const BareApiContext = createContext(null)
