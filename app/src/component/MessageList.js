@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Keyboard } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import MessageItem from './MessageItem'
 import { useMessages } from '../hook/useRedux'
@@ -17,6 +17,21 @@ const MessageList = () => {
       }, 100)
     }
   }, [messages.length])
+
+  // Handle keyboard show/hide
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      if (flashListRef.current) {
+        setTimeout(() => {
+          flashListRef.current?.scrollToEnd({ animated: true })
+        }, 100)
+      }
+    })
+
+    return () => {
+      keyboardDidShowListener.remove()
+    }
+  }, [])
 
   const renderItem = ({ item }) => {
     return (
@@ -44,6 +59,12 @@ const MessageList = () => {
           </View>
         }
         contentContainerStyle={styles.contentContainer}
+        onScrollBeginDrag={() => {
+          shouldAutoScroll.current = false
+        }}
+        onEndReached={() => {
+          shouldAutoScroll.current = true
+        }}
       />
     </View>
   )

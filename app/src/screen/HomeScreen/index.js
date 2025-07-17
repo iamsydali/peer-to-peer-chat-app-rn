@@ -59,6 +59,7 @@ export const HomeScreen = () => {
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        enabled
       >
         {isConnected ? (
           <ChatContainer onExit={handleExit} />
