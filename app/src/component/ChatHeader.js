@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    marginBottom: spacing.lg,
   },
   headerContent: {
     alignItems: 'center',

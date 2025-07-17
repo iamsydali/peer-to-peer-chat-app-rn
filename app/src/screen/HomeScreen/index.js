@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { StyleSheet, Platform, SafeAreaView, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Platform, SafeAreaView, KeyboardAvoidingView, Keyboard } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useBackend } from '../../component/BareProvider'
 import { useMessages, useRoom } from '../../hook/useRedux'
@@ -45,6 +45,7 @@ export const HomeScreen = () => {
       handleTopic(joinedTopic)
       setJoining(false)
     })
+    Keyboard.dismiss()
   }, [backend, roomTopicInput, handleTopic, setJoining])
 
   const handleExit = useCallback(() => {

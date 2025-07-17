@@ -2,11 +2,10 @@ import React, { useRef, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import MessageItem from './MessageItem'
-import ChatHeader from './ChatHeader'
 import { useMessages } from '../hook/useRedux'
 import { colors, spacing, typography } from '../theme'
 
-const MessageList = ({ onExit }) => {
+const MessageList = () => {
   const { messages } = useMessages()
   const flashListRef = useRef(null)
   const shouldAutoScroll = useRef(true)
@@ -38,9 +37,6 @@ const MessageList = ({ onExit }) => {
         estimatedItemSize={70}
         keyExtractor={(item, index) => `message_${item.timestamp}_${index}`}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <ChatHeader onExit={onExit} />
-        }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No messages yet</Text>
