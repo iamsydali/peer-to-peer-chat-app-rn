@@ -32,7 +32,8 @@ export const rpcHandler = async (req) => {
       const count = b4a.toString(req.data, 'utf8')
       console.log('current peer cnt:', count)
       
-      store.dispatch(setPeersCount(parseInt(count)))
+      // Add 1 to include the local user in the count
+      store.dispatch(setPeersCount(parseInt(count) + 1))
       break
       
     default:
