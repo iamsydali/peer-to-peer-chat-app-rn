@@ -29,7 +29,8 @@
     "react-native-bare-kit": "0.4.6",
     "react-native-web": "~0.19.13",
     "react-redux": "^9.2.0",
-    "tiny-emitter": "2.1.0"
+    "tiny-emitter": "2.1.0",
+    "expo-clipboard": "~7.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
